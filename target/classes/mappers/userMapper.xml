@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.freehoon.web.user.userMapper">
+
+
+	<select id="getUserListCnt" resultType="int">
+
+		SELECT
+
+			count(*) as listCnt
+
+		FROM
+
+			personal_profile
+			
+			<trim prefix="WHERE" prefixOverrides="AND|OR">
+
+			<if test="searchType=='name' and keyword != null and keyword != '' ">
+
+				AND name like CONCAT('%', #{keyword}, '%')
+
+			</if>
+
+			<if test="searchType=='DEPARTMENT' and keyword != null and keyword != '' ">
+
+				AND DEPARTMENT like CONCAT('%', #{keyword}, '%')
+
+			</if>
+
+		</trim>
+
+	</select>
+	
+
+		<select id="getUserList" resultType="com.freehoon.web.profile.model.ProfileVO">
+
+		SELECT
+			LEVEL, STATUS, NAME, DEPARTMENT, POSITION, TELEP_HONE, HAND_PHONE, EMAIL, WOR_KDATE, identifier
+
+		FROM 
+			personal_profile
+			
+			<trim prefix="WHERE" prefixOverrides="AND|OR">
+
+			<if test="searchType=='name' and keyword != null and keyword != '' ">
+
+				AND name like CONCAT('%', #{keyword}, '%')
+
+			</if>
+
+			<if test="searchType=='DEPARTMENT' and keyword != null and keyword != '' ">
+
+				AND DEPARTMENT like CONCAT('%', #{keyword}, '%')
+
+			</if>
+
+		</trim>
+			
+		LIMIT #{startList}, #{listSize}
+
+	</select>
+
+
+<select id="LoginProcess" resultType="com.freehoon.web.login.model.LoginVO">
+
+SELECT
+uid, name
+
+FROM 
+TBL_admin
+
+WHERE 
+1=1
+AND uid = #{uid}
+AND pwd = #{pwd}
+
+</select>
+
+
+<select id="getIDList" resultType="com.freehoon.web.login.model.RestPassWordVO">
+
+SELECT
+ID_CARD_SERIAL , name, identifier
+
+FROM 
+tbl_user
+
+</select>
+
+<select id="ResetPassWord" resultType="com.freehoon.web.login.model.RestPassWordVO">
+
+SELECT
+name, identifier, ID_CARD_SERIAL, uid
+
+FROM 
+tbl_user
+
+where
+identifier=#{identifier}
+
+</select>
+
+
+<update id="ResetingPassWord" parameterType="com.freehoon.web.login.model.RestPassWordVO">
+
+UPDATE TBL_USER 
+SET 
+pwd=#{pwd}  WHERE identifier = #{identifier} AND uid=#{uid}
+</update>
+
+
+<insert id="insertUser" parameterType="com.freehoon.web.login.model.IDVO">
+INSERT INTO 
+TBL_admin (uid, name, pwd, reg_date)
+VALUES 
+(#{uid}, #{name}, #{pwd} , now())
+
+</insert>
+
+
+</mapper>
+
+

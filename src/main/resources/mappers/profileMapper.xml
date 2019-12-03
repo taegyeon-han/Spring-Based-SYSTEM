@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+
+    PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+<mapper namespace="com.freehoon.web.board.profileMapper">
+
+
+
+	<insert id="insertBasicProfile"
+		parameterType="com.freehoon.web.profile.model.ProfileVO">
+
+		INSERT INTO personal_profile (ID_CARD_SERIAL, NAME,
+		DEPARTMENT, POSITION, LEVEL, WOR_KDATE, END_WORK_DATE, person_image,
+		identifier, STATUS, BIRTH)
+
+		VALUES (
+
+		#{ID_CARD_SERIAL},
+
+		#{name},
+
+		#{DEPARTMENT},
+
+		#{POSITION},
+
+		#{LEVEL},
+
+		#{WOR_KDATE},
+
+		DATE_ADD(#{BIRTH},
+		INTERVAL 60 YEAR),
+
+		#{person_image},
+
+		#{identifier},
+
+		#{STATUS},
+
+		#{BIRTH}
+
+		)
+
+	</insert>
+
+	<select id="getOtherProfile"
+		parameterType="com.freehoon.web.profile.model.ProfileVO"
+		resultType="com.freehoon.web.profile.model.ProfileVO">
+
+		SELECT
+
+		*
+
+		FROM
+
+		personal_profile
+
+		WHERE
+
+		identifier = #{identifier}
+
+	</select>
+
+	<update id="UpdateProfile"
+		parameterType="com.freehoon.web.profile.model.ProfileVO">
+
+		UPDATE
+		
+		personal_profile
+
+		SET
+
+		ID_CARD_SERIAL = #{ID_CARD_SERIAL},
+		person_image = #{person_image},
+		NAME = #{name},
+		EMAIL = #{EMAIL},
+		JOBS = #{JOBS},
+		BIRTH = #{BIRTH},
+		LEVEL = #{LEVEL},
+		DEPARTMENT = #{DEPARTMENT},
+		POSITION = #{POSITION},
+		STATUS = #{STATUS},
+		WOR_KDATE = #{WOR_KDATE},
+		REASON = #{REASON}
+
+		WHERE
+
+		identifier = #{identifier}
+
+	</update>
+
+
+
+	<update id="UpdateUserProfile"
+		parameterType="com.freehoon.web.profile.model.ProfileVO">
+
+		UPDATE
+		tbl_user
+
+		SET
+
+		NAME = #{name}
+
+		WHERE
+	
+		identifier = #{identifier}
+
+	</update>
+	
+	
+	<delete id="deletingAllRecord" parameterType="com.freehoon.web.profile.model.ProfileVO">
+
+		delete
+		
+		from
+		
+		personal_record
+	
+		WHERE 
+		
+		identifier = #{identifier} 
+		
+	</delete>
+
+	<delete id="deleteProfile" 	parameterType="com.freehoon.web.profile.model.ProfileVO">
+		DELETE FROM personal_profile WHERE identifier = #{identifier}
+	</delete>
+
+</mapper>

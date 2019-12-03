@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+
+    PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+<mapper namespace="com.freehoon.web.board.RecordMapper">
+
+
+
+	<insert id="insertRecord"
+		parameterType="com.freehoon.web.record.model.RecordVO">
+
+		INSERT INTO personal_record(identifier, content, reg_dt, edit_dt)
+
+		VALUES (
+
+		#{identifier}
+
+		,#{content}
+		
+		,now()
+
+		,now()
+		)
+
+	</insert>
+
+	<select id="getRecord" resultType="com.freehoon.web.record.model.RecordVO">
+
+		SELECT
+
+		bid, content, reg_dt, identifier
+
+		FROM
+
+		personal_record
+
+		WHERE
+		
+
+		identifier = #{identifier}
+
+	</select>
+	
+	<select id="getEditRecord" parameterType="int" resultType="com.freehoon.web.record.model.RecordVO">
+
+		SELECT
+
+		bid, content, reg_dt, identifier
+
+		FROM
+
+		personal_record
+
+		WHERE
+		
+		bid=#{bid}
+
+	</select>
+	
+
+
+	<update id="UpdateRecord"
+		parameterType="com.freehoon.web.record.model.RecordVO">
+
+		UPDATE
+		
+		personal_record
+		
+		SET
+		
+		content=#{content},
+		reg_dt=#{reg_dt}
+		
+		WHERE 
+		
+		identifier = #{identifier} AND BID= #{bid}
+		
+	</update>
+	
+	
+	
+	<delete id="deleteRecord" parameterType="int">
+
+		delete
+		
+		from
+		
+		personal_record
+	
+		WHERE 
+		
+		bid= #{bid}
+		
+	</delete>
+
+</mapper>
